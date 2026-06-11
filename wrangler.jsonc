@@ -1,0 +1,46 @@
+
+{
+  "name": "internal-ai-gui",
+  "main": "src/workers.ts",
+  "compatibility_date": "2026-06-10",
+  "compatibility_flags": ["nodejs_compat"],
+
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+
+  "ai": {
+    "binding": "AI"
+  },
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "internal-ai-audit",
+      "database_id": "58a708a0-6b62-4f3b-a5d1-a4a6024714aa",
+      "remote": true
+    }
+  ],
+
+  "kv_namespaces": [
+    {
+      "binding": "CONFIG",
+      "id": "3581c5c5a7bb46f4a8e27cadc919caad"
+    }
+  ],
+
+  "vars": {
+    "ENVIRONMENT": "prod",
+    "AI_GATEWAY_ID": "default",
+    "CLOUDFLARE_ACCOUNT_ID": "e1ab85903e4701fa311b5270c16665f6",
+    "TEAM_DOMAIN": "https://twister5.cloudflareaccess.com",
+    "POLICY_AUD": "fda4d96395cc7363cd578d65549bb35cc7380095e1a594493d69d38cf20cef2b"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+}

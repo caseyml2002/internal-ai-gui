@@ -1,0 +1,19 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+
+# wrangler local state & generated types
+.wrangler/
+worker-configuration.d.ts
+
+# local secrets / env (never commit)
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+
+# logs & OS noise
+*.log
+.DS_Store
