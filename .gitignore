@@ -13,6 +13,7 @@ worker-configuration.d.ts
 .env.*
 .dev.vars
 .dev.vars.*
+*.bak
 
 # logs & OS noise
 *.log
