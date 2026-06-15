@@ -151,7 +151,9 @@ export default function App() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(
+    () => typeof window === "undefined" || window.innerWidth > 760
+  );
 
   const abortRef = useRef<AbortController | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -162,6 +164,14 @@ export default function App() {
     () => sessions.find((s) => s.id === activeId) ?? null,
     [sessions, activeId]
   );
+
+  const isMobile = () =>
+    typeof window !== "undefined" && window.innerWidth <= 760;
+
+  // 手機版選了對話或開新對話後自動收起側欄
+  function closeSidebarOnMobile() {
+    if (isMobile()) setSidebarOpen(false);
+  }
 
   /* --- Boot: identity + allowed models + session list --- */
   useEffect(() => {
@@ -238,6 +248,7 @@ export default function App() {
     const s = makeSession(active?.model);
     setSessions((prev) => [s, ...prev]);
     setActiveId(s.id);
+    closeSidebarOnMobile();
     inputRef.current?.focus();
     // 空會話不立即寫入伺服器，等第一則訊息送出後才持久化
   }
@@ -245,6 +256,7 @@ export default function App() {
   /* --- 選取會話：未載入訊息時向伺服器取回 --- */
   async function openSession(id: string) {
     setActiveId(id);
+    closeSidebarOnMobile();
     if (loadedRef.current.has(id)) return;
     loadedRef.current.add(id);
 
@@ -559,6 +571,15 @@ export default function App() {
           </div>
         </div>
       </aside>
+
+      {/* ---------- Mobile backdrop（側欄展開時點擊關閉） ---------- */}
+      {sidebarOpen && (
+        <button
+          className="sidebar-backdrop"
+          aria-label="關閉側欄"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
       {/* ---------- Main ---------- */}
       <main className="main">
